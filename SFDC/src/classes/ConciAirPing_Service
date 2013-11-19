@@ -1,0 +1,143 @@
+/**
+*   @author Peter Hempsall
+*   @date 19/11/2013
+*   @description: ConciAir service
+
+    Apex Class Name:  ConciAirPing_Service 
+    Version     : 1.0  
+    Function    : Receives requests for service from in store shoppers, creates case & notifies conciAir team 
+    Modification Log : 
+    -----------------------------------------------------------------------------
+    Developer                   Date                    Description
+    ----------------------------------------------------------------------------                 
+    Peter Hempsall            19 November 2013          First draft
+*/
+
+@RestResource(urlMapping='/v1.0/conciairPing/*')
+global with sharing class ConciAirPing_Service {
+	@HttpPost
+    global static String pingForAssistance() {
+    	RestRequest req = RestContext.request;
+        RestResponse res = RestContext.response;
+        String jsonresp; 
+        try{
+
+        	//security: check user is not guest and is logged in.
+        	if(UserInfo.getUserType() == 'Guest'){
+        		return 'ERROR: not logged in';
+        	}
+
+			User currentUser = [SELECT  
+			                    ContactId, 
+			                    Contact.AccountId,
+			                    Contact.Level__c,
+			                    Contact.Name
+				                from User 
+				                where Id = :UserInfo.getUserId() 
+				                limit 1];
+			
+			Id shopperId = currentUser.ContactId;    
+
+        	//Extract beacon and user id from payload data
+			Blob JSONDataFromMobileDevice = req.requestBody;
+
+			/* Sample json
+			{
+				'userId': 35325;
+				'major': 6446343;
+				'minor': 436346;
+				'proximity': 'near'
+			}
+			*/
+		    JSONParser parser = JSON.createParser(JSONDataFromMobileDevice.toString());
+		    ConciAirReq jsondata = (ConciAirReq)parser.readValueAs(ConciAirReq.class);
+
+		   	String userId = jsondata.userId;
+		   	String storeBeacon = jsondata.major;
+		   	String deptBeacon = jsondata.minor;
+		   	String beaconId = storeBeacon + '-' + deptBeacon;
+
+
+        	//Find beacon details
+			Department__c dept = [SELECT Id, Name, Store__c, Store__r.conciAir_Group__c FROM Department__c WHERE Location_Beacon__c = :beaconId LIMIT 1];		   	
+			if(dept == null){
+				return 'ERROR: dept not found';
+			}
+
+        	//Create case
+			Case pingRequest = New Case();
+			pingRequest.status = 'New';
+			pingRequest.Department__c = dept.Id;
+			pingRequest.contact.Id = shopperId;
+
+			//set priority based on service status
+			if(currentUser.Contact.Level__c == 'Platinum'){
+				pingRequest.priority = 'High';
+			}else{
+				pingRequest.priority = 'Medium';
+			}
+
+			insert pingRequest;
+
+        	//Add chatter post on case and @ the conciAir team
+
+			if(dept.Store__r.conciAir_Group__c != null){
+	        	String chatterString = currentUser.contact.Name + ' would like help. They are in department ' + dept.Name + '.';
+
+	            //Create FeedItemInput to hold message body and @mentions//
+	            ConnectApi.FeedItemInput   feedItemInput = new ConnectApi.FeedItemInput();
+
+	            //Create MessageBodyInput (child of FeedItemInput) to hold message segments
+	            ConnectApi.MessageBodyInput messageInput = new ConnectApi.MessageBodyInput();
+	            messageInput.messageSegments = new List<ConnectApi.MessageSegmentInput>();
+	            
+	            //Create mention segment to hold an @mention//
+	            ConnectApi.MentionSegmentInput mention = new ConnectApi.MentionSegmentInput();
+	            mention.id = dept.Store__r.conciAir_Group__c;
+	            //Add mention to message segment//
+	            messageInput.messageSegments.add(mention);
+	            
+
+	            //Create text segment to hold message body//
+	            ConnectApi.TextSegmentInput textSegment = new ConnectApi.TextSegmentInput();
+	            textSegment.text = chatterString;
+	            //Add body to message segment//
+	            messageInput.messageSegments.add(textSegment); 
+
+	            system.debug('MESSAGE INPUT:' + messageInput);
+	                        
+	            //Assign created segments to the messageBodyInput, then assign that to the be the feedItemInput's body//
+	            feedItemInput.body = messageInput;
+	            
+	            //try calling the chatter rest for 
+	            try {
+	                //Create FeedItemPost//
+	                ConnectApi.FeedItem feedItemRep = ConnectApi.ChatterFeeds.postFeedItem(null, ConnectApi.FeedType.Record, pingRequest.Id,feedItemInput,null);
+	                system.debug('FEED ITEM' + feedItemRep);
+	            } catch(Exception e){
+	                system.debug('Call Out Error :' + e.getMessage()); // avoiding the user seeing salesforce error and instead showing custom error
+	            }
+            }
+
+			//Let the shopper's mobile client know we've created the request.
+        	jsonresp = 'OK';
+
+
+		}catch (exception e){
+    		jsonresp = errorString(e.getMessage(),e.getStackTraceString(),e.getLineNumber() );
+		}
+        return jsonresp;
+    }
+
+    public static string errorString(string err, string stack, integer lineNo){
+		return 'Error :- ' +  err + ' Stack :- ' + stack + ' line No :- ' + string.valueof(lineNo);
+	} 
+
+	global class ConciAirReq{
+		public String userId;
+		public String major;
+		public String minor;
+		public String proximity;
+	}
+
+}
