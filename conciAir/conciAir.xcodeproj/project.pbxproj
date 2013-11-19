@@ -909,14 +909,14 @@
 				INFOPLIST_FILE = "conciAir/conciAir-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/mprechner/conciAir/conciAir/conciAir/dependencies/RestKit,
-					/Users/mprechner/conciAir/conciAir/conciAir/dependencies/SalesforceCommonUtils/Libraries,
-					/Users/mprechner/conciAir/conciAir/conciAir/dependencies/SalesforceOAuth/Libraries,
-					/Users/mprechner/conciAir/conciAir/conciAir/dependencies/SalesforceSDK,
-					/Users/mprechner/conciAir/conciAir/conciAir/dependencies/sqlcipher,
-					/Users/mprechner/conciAir/conciAir/conciAir/dependencies/openssl,
+					./conciAir/dependencies/RestKit,
+					./conciAir/dependencies/SalesforceCommonUtils/Libraries,
+					./conciAir/dependencies/SalesforceOAuth/Libraries,
+					./conciAir/dependencies/SalesforceSDK,
+					./conciAir/dependencies/sqlcipher,
+					./conciAir/dependencies/openssl,
 					"$(SDKROOT)//usr/lib",
-					/Users/mprechner/conciAir/conciAir/conciAir/dependencies/EstimoteSDK,
+					./conciAir/dependencies/EstimoteSDK,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -938,14 +938,14 @@
 				INFOPLIST_FILE = "conciAir/conciAir-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/mprechner/conciAir/conciAir/conciAir/dependencies/RestKit,
-					/Users/mprechner/conciAir/conciAir/conciAir/dependencies/SalesforceCommonUtils/Libraries,
-					/Users/mprechner/conciAir/conciAir/conciAir/dependencies/SalesforceOAuth/Libraries,
-					/Users/mprechner/conciAir/conciAir/conciAir/dependencies/SalesforceSDK,
-					/Users/mprechner/conciAir/conciAir/conciAir/dependencies/sqlcipher,
-					/Users/mprechner/conciAir/conciAir/conciAir/dependencies/openssl,
+					./conciAir/dependencies/RestKit,
+					./conciAir/dependencies/SalesforceCommonUtils/Libraries,
+					./conciAir/dependencies/SalesforceOAuth/Libraries,
+					./conciAir/dependencies/SalesforceSDK,
+					./conciAir/dependencies/sqlcipher,
+					./conciAir/dependencies/openssl,
 					"$(SDKROOT)//usr/lib",
-					/Users/mprechner/conciAir/conciAir/conciAir/dependencies/EstimoteSDK,
+					./conciAir/dependencies/EstimoteSDK,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -971,6 +971,7 @@
 				F742D2F6183B3633009A53D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
