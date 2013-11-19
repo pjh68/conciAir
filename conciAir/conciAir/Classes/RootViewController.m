@@ -12,12 +12,17 @@
 #import "SFAccountManager.h"
 #import <ESTBeaconManager.h>
 
+uint const BEACON_MAJOR = 36610;
+
 @interface RootViewController () <ESTBeaconManagerDelegate>
 
 @property (nonatomic, strong) ESTBeaconManager* beaconManager;
 @property (nonatomic, strong) ESTBeacon* selectedBeacon;
 
+@property (nonatomic) UIBackgroundTaskIdentifier bgTask;
+
 @end
+
 
 @implementation RootViewController
 
@@ -33,8 +38,84 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    /////////////////////////////////////////////////////////////
+    // setup Estimote beacon manager
+    
+    // craete manager instance
+    self.beaconManager = [[ESTBeaconManager alloc] init];
+    self.beaconManager.delegate = self;
+    self.beaconManager.avoidUnknownStateBeacons = YES;
+    
+    // create sample region with major value defined
+    ESTBeaconRegion* region = [[ESTBeaconRegion alloc] initRegionWithMajor:BEACON_MAJOR identifier: @"EstimoteSampleRegion"];
+    
+    [self.beaconManager requestStateForRegion:region];
+
 }
+
+-(void)beaconManager:(ESTBeaconManager *)manager
+   didDetermineState:(CLRegionState)state
+           forRegion:(ESTBeaconRegion *)region
+{
+    if(state == CLRegionStateInside)
+    {
+        self.helpBtn.enabled = YES;
+    }
+    else
+    {
+        self.helpBtn.enabled = NO;
+    }
+    
+    // start looking for estimote beacons in region
+    // when beacon ranged beaconManager:didEnterRegion:
+    // and beaconManager:didExitRegion: invoked
+    [self.beaconManager startMonitoringForRegion:region];
+    
+}
+
+-(void)beaconManager:(ESTBeaconManager *)manager
+      didEnterRegion:(ESTBeaconRegion *)region
+{
+    // iPhone/iPad entered
+    self.helpBtn.enabled = YES;
+    
+    // start looking for estimote beacons in region
+    [self.beaconManager startRangingBeaconsInRegion:region];
+
+}
+
+-(void)beaconManager:(ESTBeaconManager *)manager
+       didExitRegion:(ESTBeaconRegion *)region
+{
+    // iPhone/iPad left beacon zone
+    self.helpBtn.enabled = NO;
+    
+    [self.beaconManager stopRangingBeaconsInRegion:region];
+}
+
+
+-(void)beaconManager:(ESTBeaconManager *)manager
+     didRangeBeacons:(NSArray *)beacons
+            inRegion:(ESTBeaconRegion *)region
+{
+    if([beacons count] > 0)
+    {
+        // Find the closed beacon that is registed
+        for (ESTBeacon* cBeacon in beacons)
+        {
+            // update beacon it same as selected initially
+            if(BEACON_MAJOR == [cBeacon.ibeacon.major unsignedShortValue])
+            {
+                self.selectedBeacon = cBeacon;
+            }
+        }
+        
+        self.selectedBeacon = [beacons objectAtIndex:0];
+    }
+}
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -42,12 +123,13 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 /**
  Handler User Click HELP
  */
 -(IBAction) onClickHelp:(id) sender {
     NSLog(@"onClickHelp >>");
-    
+
     [self sendCreateCaseRequest];
 }
 
@@ -61,11 +143,21 @@
 
     NSMutableDictionary *createData = [[NSMutableDictionary alloc] init];
     [createData setValue:[SFAccountManager sharedInstance].credentials.userId forKey:@"userId"];
-
-    NSString *webserviceEndPoint = @"/services/apexrest/<< SERVICE URL GOES HERE >>";
-    NSString *webservicePath = @"<< WEBSERIVICE VERSION >>/<< WEB SERVICE PATH >>";
+    
+    if (self.selectedBeacon != nil) {
+        [createData setValue:[self.selectedBeacon.ibeacon.major stringValue] forKey:@"major"];
+        [createData setValue:[self.selectedBeacon.ibeacon.major stringValue] forKey:@"minor"];
+        [createData setValue:[self getProximityString:self.selectedBeacon] forKey:@"proximity"];
+    } else {
+        [createData setValue:@"-1" forKey:@"major"];
+        [createData setValue:@"-1" forKey:@"minor"];
+        [createData setValue:@"Unknown" forKey:@"proximity"];
+    }
+    
+    NSString *webserviceEndPoint = @"/services/apexrest/";
+    NSString *webservicePath = @"v1.0/conciairPing";
     request = [SFRestRequest requestWithMethod:SFRestMethodPOST path:webservicePath queryParams:createData];
-    request.endpoint = [webserviceEndPoint stringByAppendingString: @"/"];
+    request.endpoint = webserviceEndPoint;
     
     NSLog(@"Craete Request");
     NSLog(@"Create Data: %@", createData);
@@ -80,11 +172,62 @@
                                   completeBlock:^(NSDictionary *results) {
                                       NSLog(@"Success sending create request");
                                       
-                                      UIAlertView *success=[[UIAlertView alloc] initWithTitle:@"Success" message:@"Success" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                      UIAlertView *success=[[UIAlertView alloc] initWithTitle:@"Success" message:[ NSString stringWithFormat:@"Success: %@", results] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                                       [success show];
                                   }
      ];
 
+}
+
+/**
+ Format the proxmity of the closest becaon to readable string.
+ */
+-(NSString *) getProximityString:(ESTBeacon*) becaon {
+    
+    NSString* proximityString;
+    
+    // calculate and set new y position
+    switch (becaon.ibeacon.proximity)
+    {
+        case CLProximityUnknown:
+            proximityString = @"Unknown";
+            break;
+        case CLProximityImmediate:
+            proximityString = @"Immediate";
+            break;
+        case CLProximityNear:
+            proximityString = @"Near";
+            break;
+        case CLProximityFar:
+            proximityString = @"Far";
+            break;
+            
+        default:
+            break;
+    }
+    
+    return proximityString;
+
+}
+
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    self.bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
+        // Clean up any unfinished task business by marking where you
+        // stopped or ending the task outright.
+        [application endBackgroundTask:self.bgTask];
+        self.bgTask = UIBackgroundTaskInvalid;
+    }];
+    
+    // Start the long-running task and return immediately.
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        // Do the work associated with the task, preferably in chunks.
+        
+        [application endBackgroundTask:self.bgTask];
+        self.bgTask = UIBackgroundTaskInvalid;
+    });
 }
 
 
