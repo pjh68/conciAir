@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RootViewController">
             <connections>
+                <outlet property="bellTop" destination="Icf-Jb-1TH" id="H7x-fF-KI7"/>
                 <outlet property="helpBtn" destination="zNF-C1-yS0" id="BJs-oN-Gvq"/>
                 <outlet property="helpLabel" destination="SnT-2f-ViD" id="I4j-29-ccX"/>
                 <outlet property="view" destination="1" id="3"/>
@@ -17,11 +18,27 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="conciair-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="IRj-pJ-Jm2">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="blue-background.png" translatesAutoresizingMaskIntoConstraints="NO" id="IRj-pJ-Jm2">
                     <rect key="frame" x="-7" y="0.0" width="327" height="568"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="I want assistance" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SnT-2f-ViD">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BellTop.png" translatesAutoresizingMaskIntoConstraints="NO" id="Icf-Jb-1TH">
+                    <rect key="frame" x="36" y="305" width="240" height="128"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="240" id="kzi-KZ-HAd"/>
+                        <constraint firstAttribute="height" constant="128" id="xqp-gH-9ae"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BellBottom.png" translatesAutoresizingMaskIntoConstraints="NO" id="qLc-9F-eFn">
+                    <rect key="frame" x="36" y="443" width="240" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="6Rh-An-Om3"/>
+                        <constraint firstAttribute="width" constant="240" id="W90-M2-kC3"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I want assistance" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SnT-2f-ViD">
                     <rect key="frame" x="25" y="477" width="263" height="63"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.050980396568775177" green="0.015686275437474251" blue="0.29411765933036804" alpha="1" colorSpace="deviceRGB"/>
@@ -32,8 +49,32 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zNF-C1-yS0">
-                    <rect key="frame" x="30" y="320" width="280" height="212"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="ConciAir" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EPh-AJ-FYh">
+                    <rect key="frame" x="0.0" y="20" width="320" height="82"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="320" id="pze-JE-pIc"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-UltraLightItalic" family="Helvetica Neue" pointSize="80"/>
+                    <color key="textColor" red="0.8666666666666667" green="0.91764705882352937" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Welcome to" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Swv-c3-z0o">
+                    <rect key="frame" x="0.0" y="112" width="320" height="82"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="31"/>
+                    <color key="textColor" red="0.86666666670000003" green="0.91764705879999997" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Shopping on Howard" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tId-1H-uTU">
+                    <rect key="frame" x="0.0" y="155" width="320" height="82"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="29"/>
+                    <color key="textColor" red="0.86666666670000003" green="0.91764705879999997" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zNF-C1-yS0">
+                    <rect key="frame" x="14" y="268" width="295" height="287"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -45,13 +86,33 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="qLc-9F-eFn" firstAttribute="top" secondItem="Icf-Jb-1TH" secondAttribute="bottom" constant="10" id="3lu-4r-1Mh"/>
+                <constraint firstAttribute="trailing" secondItem="qLc-9F-eFn" secondAttribute="trailing" constant="44" id="Asc-OH-vEW"/>
+                <constraint firstAttribute="trailing" secondItem="SnT-2f-ViD" secondAttribute="trailing" constant="32" id="C4Y-LM-CCk"/>
+                <constraint firstAttribute="trailing" secondItem="tId-1H-uTU" secondAttribute="trailing" id="HTd-sr-sAD"/>
                 <constraint firstAttribute="bottom" secondItem="SnT-2f-ViD" secondAttribute="bottom" constant="28" id="MtL-8J-jUh"/>
+                <constraint firstItem="tId-1H-uTU" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="Tzm-Pg-97I"/>
+                <constraint firstItem="qLc-9F-eFn" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="36" id="Vqy-Ol-aYe"/>
+                <constraint firstItem="Swv-c3-z0o" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="chs-gE-0sU"/>
+                <constraint firstItem="Icf-Jb-1TH" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="36" id="eTA-1I-9AW"/>
+                <constraint firstAttribute="trailing" secondItem="EPh-AJ-FYh" secondAttribute="trailing" id="gdr-5N-0Iy"/>
+                <constraint firstItem="tId-1H-uTU" firstAttribute="top" secondItem="EPh-AJ-FYh" secondAttribute="bottom" constant="53" id="htb-ZV-qQT"/>
+                <constraint firstAttribute="trailing" secondItem="Swv-c3-z0o" secondAttribute="trailing" id="jJ6-uB-oXM"/>
+                <constraint firstItem="EPh-AJ-FYh" firstAttribute="top" secondItem="1" secondAttribute="top" constant="20" id="jhw-mO-vTt"/>
+                <constraint firstItem="SnT-2f-ViD" firstAttribute="top" secondItem="qLc-9F-eFn" secondAttribute="bottom" constant="10" id="kTt-Wb-zz2"/>
+                <constraint firstAttribute="bottom" secondItem="zNF-C1-yS0" secondAttribute="bottom" constant="13" id="nZp-Ls-Mgo"/>
+                <constraint firstItem="Swv-c3-z0o" firstAttribute="top" secondItem="EPh-AJ-FYh" secondAttribute="bottom" constant="8" id="sY9-Bp-1Xg"/>
+                <constraint firstItem="SnT-2f-ViD" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="25" id="tEy-fg-Uak"/>
+                <constraint firstItem="EPh-AJ-FYh" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="uP9-Tm-J20"/>
+                <constraint firstAttribute="trailing" secondItem="Icf-Jb-1TH" secondAttribute="trailing" constant="44" id="wGY-U9-gT2"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
     <resources>
-        <image name="conciair-background.png" width="1280" height="2272"/>
+        <image name="BellBottom.png" width="862" height="76"/>
+        <image name="BellTop.png" width="838" height="400"/>
+        <image name="blue-background.png" width="1" height="1"/>
     </resources>
 </document>

@@ -12,6 +12,7 @@
 #import "SFAccountManager.h"
 #import <ESTBeaconManager.h>
 #import "SFIdentityData.h"
+#import <QuartzCore/QuartzCore.h>
 
 uint const BEACON_MAJOR = 52231;
 
@@ -144,6 +145,18 @@ uint const BEACON_MAJOR = 52231;
     NSLog(@"onClickHelp >>");
     self.helpLabel.text = @"Requesting assistance...";
     
+     
+    //Animate bell ring
+    CAKeyframeAnimation * anim = [ CAKeyframeAnimation animationWithKeyPath:@"transform" ] ;
+    anim.values = @[ [ NSValue valueWithCATransform3D:CATransform3DMakeTranslation(-5.0f, 0.0f, 0.0f) ], [ NSValue valueWithCATransform3D:CATransform3DMakeTranslation(5.0f, 0.0f, 0.0f) ] ] ;
+    anim.autoreverses = YES ;
+    anim.repeatCount = 5.0f ;
+    anim.duration = 0.07f ;
+    
+    [self.bellTop.layer addAnimation:anim forKey:nil ] ;
+    
+    
+    //Make case
     [self sendCreateCaseRequest];
 }
 
