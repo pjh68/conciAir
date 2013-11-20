@@ -20,8 +20,6 @@ uint const BEACON_MAJOR = 52231;
 @property (nonatomic, strong) ESTBeaconManager* beaconManager;
 @property (nonatomic, strong) ESTBeacon* selectedBeacon;
 
-@property (nonatomic) UIBackgroundTaskIdentifier bgTask;
-
 @property (strong, nonatomic) CLLocationManager *locationManager;
 
 @end
@@ -38,9 +36,35 @@ uint const BEACON_MAJOR = 52231;
     return self;
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/**
+ On view load setup location services and enable beacon searching.
+ */
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    /////////////////////////////////////////////////////////////
+    // FORCE Location Services Startup
+    [self setupLocationServices];
+    
+    /////////////////////////////////////////////////////////////
+    // SETUP Estimote beacon manager
+    [self setupEstimoteBeacon];
+    
+}
+
+/**
+ Setup location services, forces the app to register for location updates which
+ enables the Estimote bluetooth becaons.
+ */
+-(void) setupLocationServices {
     
     if(self.locationManager==nil){
         _locationManager=[[CLLocationManager alloc] init];
@@ -56,10 +80,18 @@ uint const BEACON_MAJOR = 52231;
     if([CLLocationManager locationServicesEnabled]){
         [self.locationManager startUpdatingLocation];
     }
-    
-    /////////////////////////////////////////////////////////////
-    // setup Estimote beacon manager
-    
+}
+
+/////////////////////////////////////////////////////////////
+//
+#pragma mark - Beacon Manager
+
+/**
+ Setup estimote beacons. Initialise the beacon manager and create scanning region
+ to search for beacons. Request state of current region to detect if user is
+ already within the beacon range and start monitoring for changes to users location.
+ */
+-(void) setupEstimoteBeacon {
     // craete manager instance
     self.beaconManager = [[ESTBeaconManager alloc] init];
     self.beaconManager.delegate = self;
@@ -69,15 +101,35 @@ uint const BEACON_MAJOR = 52231;
     ESTBeaconRegion* region = [[ESTBeaconRegion alloc] initRegionWithMajor:BEACON_MAJOR identifier: @"EstimoteSampleRegion"];
     
     [self.beaconManager requestStateForRegion:region];
+    
+    // start looking for estimote beacons in region
+    // when beacon ranged beaconManager:didEnterRegion:
+    // and beaconManager:didExitRegion: invoked
+    [self.beaconManager startMonitoringForRegion:region];
+    
 }
 
-
+/**
+ Handle scenarios where monitoring fails for the region.
+ 
+ Don't show user an error message, fail silently. User can still make use of
+ assistance request.
+ 
+ */
 -(void)beaconManager:(ESTBeaconManager *)manager monitoringDidFailForRegion:(ESTBeaconRegion *)region withError:(NSError *)error {
     
+    NSLog(@"Failed to discover beacon in region: %@", error);
+    
+    /*
     UIAlertView *alertError=[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to discover beacon in region: %@", error] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alertError show];
+     */
 }
 
+/**
+ When initial state determined if currently in beacon range start searching
+ for particular beacon data.
+ */
 -(void)beaconManager:(ESTBeaconManager *)manager
    didDetermineState:(CLRegionState)state
            forRegion:(ESTBeaconRegion *)region
@@ -88,13 +140,13 @@ uint const BEACON_MAJOR = 52231;
         [self.beaconManager startRangingBeaconsInRegion:region];
     }
     
-    // start looking for estimote beacons in region
-    // when beacon ranged beaconManager:didEnterRegion:
-    // and beaconManager:didExitRegion: invoked
-    [self.beaconManager startMonitoringForRegion:region];
-    
 }
 
+/**
+ Handle beacons coming into range. This means the user has entered the shop area
+ and should be presented with a notifcation. Start looking for specific beacon
+ data to locate their exact position in the shop.
+ */
 -(void)beaconManager:(ESTBeaconManager *)manager
       didEnterRegion:(ESTBeaconRegion *)region
 {
@@ -105,19 +157,27 @@ uint const BEACON_MAJOR = 52231;
     NSString *userName = [SFAccountManager sharedInstance].idData.firstName;
     
     UILocalNotification *notification = [[UILocalNotification alloc] init];
-    notification.alertBody = [NSString stringWithFormat:@"Welcome back %@, swipe for service", userName];
+    notification.alertBody = [NSString stringWithFormat:@"Welcome back %@. conciAir is ready when you are", userName];
+    notification.alertAction = [NSString stringWithFormat:@"get help"];
     notification.soundName = UILocalNotificationDefaultSoundName;
     
     [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 }
 
+/**
+ Handle beacons exiting range. This means the user has left the shop area, stop
+ looking for specific beacon data.
+ */
 -(void)beaconManager:(ESTBeaconManager *)manager
        didExitRegion:(ESTBeaconRegion *)region
 {
     [self.beaconManager stopRangingBeaconsInRegion:region];
 }
 
-
+/**
+ Beacon ranging update, store details of closest beacon, this data is used to 
+ determine the exact position within the shop.
+ */
 -(void)beaconManager:(ESTBeaconManager *)manager
      didRangeBeacons:(NSArray *)beacons
             inRegion:(ESTBeaconRegion *)region
@@ -128,17 +188,14 @@ uint const BEACON_MAJOR = 52231;
     }
 }
 
-
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
+/////////////////////////////////////////////////////////////
+//
+#pragma mark - Service Request
 
 /**
- Handler User Click HELP
+ Button handler for user clicking help request.
+ 
+ Provide feedback to the user and initiate help case request.
  */
 -(IBAction) onClickHelp:(id) sender {
     NSLog(@"onClickHelp >>");
@@ -148,13 +205,16 @@ uint const BEACON_MAJOR = 52231;
 }
 
 /**
+ Initiate the help request by sending a location notification to Salesforce.
  
+ Makes POST request with custom web service providing beacon identification and
+ proximity data.
  */
 -(void) sendCreateCaseRequest {
     NSLog(@"sendCreateCaseRequest >>");
     
-    SFRestRequest *request;
-
+    /////////////////////////////////////////////////////////////
+    // Get location data and create post data.
     NSMutableDictionary *createData = [[NSMutableDictionary alloc] init];
     [createData setValue:[SFAccountManager sharedInstance].credentials.userId forKey:@"userId"];
     
@@ -168,6 +228,10 @@ uint const BEACON_MAJOR = 52231;
         [createData setValue:@"Unknown" forKey:@"proximity"];
     }
     
+    /////////////////////////////////////////////////////////////
+    // Send request to custom webservice
+    SFRestRequest *request;
+
     NSString *webserviceEndPoint = @"/services/apexrest/";
     NSString *webservicePath = @"v1.0/conciairPing";
     request = [SFRestRequest requestWithMethod:SFRestMethodPOST path:webservicePath queryParams:createData];
@@ -180,18 +244,12 @@ uint const BEACON_MAJOR = 52231;
                                       failBlock:^(NSError *e) {
                                           NSLog(@"Failed to send create request: %@", e);
                                           self.helpLabel.text = @"Couldn't connect. Try again?";
-                                          
-                                          UIAlertView *error=[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to send create request: %@", e] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                                          [error show];
+
                                       }
                                   completeBlock:^(NSDictionary *results) {
                                       NSLog(@"Success sending create request");
                                       
                                       self.helpLabel.text = @"Assistance is on it's way";
-                                      /*
-                                      UIAlertView *success=[[UIAlertView alloc] initWithTitle:@"Success" message:[ NSString stringWithFormat:@"Success: %@", results] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                                      [success show];
-                                    */
                                   }
      ];
 
@@ -227,26 +285,5 @@ uint const BEACON_MAJOR = 52231;
     return proximityString;
 
 }
-
-
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-    self.bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
-        // Clean up any unfinished task business by marking where you
-        // stopped or ending the task outright.
-        [application endBackgroundTask:self.bgTask];
-        self.bgTask = UIBackgroundTaskInvalid;
-    }];
-    
-    // Start the long-running task and return immediately.
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
-        // Do the work associated with the task, preferably in chunks.
-        
-        [application endBackgroundTask:self.bgTask];
-        self.bgTask = UIBackgroundTaskInvalid;
-    });
-}
-
 
 @end
