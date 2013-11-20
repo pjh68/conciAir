@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D02A2177183C410700C3FC5D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D02A2176183C410700C3FC5D /* Default.png */; };
+		D02A2177183C410700C3FC5D /* conciair-background.png in Resources */ = {isa = PBXBuildFile; fileRef = D02A2176183C410700C3FC5D /* conciair-background.png */; };
+		D02A217A183D517300C3FC5D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D02A2178183D517300C3FC5D /* Default-568h@2x.png */; };
+		D02A217B183D517300C3FC5D /* Default@2x copy.png in Resources */ = {isa = PBXBuildFile; fileRef = D02A2179183D517300C3FC5D /* Default@2x copy.png */; };
+		D02A217D183D51DD00C3FC5D /* blue-background.png in Resources */ = {isa = PBXBuildFile; fileRef = D02A217C183D51DD00C3FC5D /* blue-background.png */; };
 		F742D1F7183B3632009A53D6 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F742D1F6183B3632009A53D6 /* CoreData.framework */; };
 		F742D1F9183B3632009A53D6 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F742D1F8183B3632009A53D6 /* MessageUI.framework */; };
 		F742D1FB183B3632009A53D6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F742D1FA183B3632009A53D6 /* QuartzCore.framework */; };
@@ -51,7 +54,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D02A2176183C410700C3FC5D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		D02A2176183C410700C3FC5D /* conciair-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conciair-background.png"; sourceTree = "<group>"; };
+		D02A2178183D517300C3FC5D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		D02A2179183D517300C3FC5D /* Default@2x copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x copy.png"; sourceTree = "<group>"; };
+		D02A217C183D51DD00C3FC5D /* blue-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-background.png"; sourceTree = "<group>"; };
 		F742D1F3183B3632009A53D6 /* conciAir.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = conciAir.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F742D1F6183B3632009A53D6 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		F742D1F8183B3632009A53D6 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -613,7 +619,8 @@
 		F742D2C1183B3632009A53D6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				D02A2176183C410700C3FC5D /* Default.png */,
+				D02A217C183D51DD00C3FC5D /* blue-background.png */,
+				D02A2176183C410700C3FC5D /* conciair-background.png */,
 				F742D2C2183B3632009A53D6 /* icons */,
 				F742D2CB183B3632009A53D6 /* splash */,
 			);
@@ -634,6 +641,8 @@
 		F742D2CB183B3632009A53D6 /* splash */ = {
 			isa = PBXGroup;
 			children = (
+				D02A2178183D517300C3FC5D /* Default-568h@2x.png */,
+				D02A2179183D517300C3FC5D /* Default@2x copy.png */,
 			);
 			name = splash;
 			sourceTree = "<group>";
@@ -743,17 +752,20 @@
 			files = (
 				F742D2E7183B3632009A53D6 /* SFAuthorizingViewController.xib in Resources */,
 				F742D2C4183B3632009A53D6 /* icon-72.png in Resources */,
+				D02A217B183D517300C3FC5D /* Default@2x copy.png in Resources */,
 				F742D2F1183B3633009A53D6 /* SalesforceSDKResources.bundle in Resources */,
 				F742D2CA183B3632009A53D6 /* icon@2x.png in Resources */,
 				F742D2C8183B3632009A53D6 /* icon.png in Resources */,
 				F742D2FB183B3D3A009A53D6 /* RootViewController.xib in Resources */,
 				F742D2B9183B3632009A53D6 /* LICENSE in Resources */,
 				F742D20F183B3632009A53D6 /* InfoPlist.strings in Resources */,
+				D02A217D183D51DD00C3FC5D /* blue-background.png in Resources */,
 				F742D2EF183B3633009A53D6 /* Settings.bundle in Resources */,
 				F742D213183B3632009A53D6 /* conciAir-Prefix.pch in Resources */,
 				F742D2DD183B3632009A53D6 /* readme.txt in Resources */,
-				D02A2177183C410700C3FC5D /* Default.png in Resources */,
+				D02A2177183C410700C3FC5D /* conciair-background.png in Resources */,
 				F742D2C6183B3632009A53D6 /* icon-72@2x.png in Resources */,
+				D02A217A183D517300C3FC5D /* Default-568h@2x.png in Resources */,
 				F742D2C0183B3632009A53D6 /* openssl_license.txt in Resources */,
 				F742D2E9183B3632009A53D6 /* SFNativeRootViewController.xib in Resources */,
 			);
