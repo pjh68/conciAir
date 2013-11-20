@@ -67,14 +67,8 @@ uint const BEACON_MAJOR = 52231;
 {
     if(state == CLRegionStateInside)
     {
-        self.helpBtn.enabled = YES;
-        
         // start looking for estimote beacons in region
         [self.beaconManager startRangingBeaconsInRegion:region];
-    }
-    else
-    {
-        self.helpBtn.enabled = NO;
     }
     
     // start looking for estimote beacons in region
@@ -87,20 +81,22 @@ uint const BEACON_MAJOR = 52231;
 -(void)beaconManager:(ESTBeaconManager *)manager
       didEnterRegion:(ESTBeaconRegion *)region
 {
-    // iPhone/iPad entered
-    self.helpBtn.enabled = YES;
-    
     // start looking for estimote beacons in region
     [self.beaconManager startRangingBeaconsInRegion:region];
 
+    // present local notification
+    NSString *userName = [SFAccountManager sharedInstance].idData.firstName;
+    
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    notification.alertBody = [NSString stringWithFormat:@"Welcome back %@, swipe for service", userName];
+    notification.soundName = UILocalNotificationDefaultSoundName;
+    
+    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 }
 
 -(void)beaconManager:(ESTBeaconManager *)manager
        didExitRegion:(ESTBeaconRegion *)region
 {
-    // iPhone/iPad left beacon zone
-    self.helpBtn.enabled = NO;
-    
     [self.beaconManager stopRangingBeaconsInRegion:region];
 }
 
