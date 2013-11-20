@@ -51,6 +51,12 @@
 		F742D2FF183B4C12009A53D6 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F742D2FE183B4C12009A53D6 /* CoreBluetooth.framework */; };
 		F742D301183B4C17009A53D6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F742D300183B4C17009A53D6 /* CoreLocation.framework */; };
 		F742D309183B4E76009A53D6 /* libEstimoteSDK7.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F742D308183B4E76009A53D6 /* libEstimoteSDK7.a */; };
+		F742D314183D6D26009A53D6 /* Bell.png in Resources */ = {isa = PBXBuildFile; fileRef = F742D30E183D6D26009A53D6 /* Bell.png */; };
+		F742D315183D6D26009A53D6 /* BellBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = F742D30F183D6D26009A53D6 /* BellBottom.png */; };
+		F742D316183D6D26009A53D6 /* BellTop.png in Resources */ = {isa = PBXBuildFile; fileRef = F742D310183D6D26009A53D6 /* BellTop.png */; };
+		F742D317183D6D26009A53D6 /* ConciAir-v2.png in Resources */ = {isa = PBXBuildFile; fileRef = F742D311183D6D26009A53D6 /* ConciAir-v2.png */; };
+		F742D318183D6D26009A53D6 /* ConciAir.png in Resources */ = {isa = PBXBuildFile; fileRef = F742D312183D6D26009A53D6 /* ConciAir.png */; };
+		F742D319183D6D26009A53D6 /* ConciAirIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F742D313183D6D26009A53D6 /* ConciAirIcon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -246,6 +252,12 @@
 		F742D306183B4E76009A53D6 /* ESTBeaconManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESTBeaconManager.h; sourceTree = "<group>"; };
 		F742D307183B4E76009A53D6 /* ESTBeaconRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESTBeaconRegion.h; sourceTree = "<group>"; };
 		F742D308183B4E76009A53D6 /* libEstimoteSDK7.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libEstimoteSDK7.a; sourceTree = "<group>"; };
+		F742D30E183D6D26009A53D6 /* Bell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bell.png; sourceTree = "<group>"; };
+		F742D30F183D6D26009A53D6 /* BellBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BellBottom.png; sourceTree = "<group>"; };
+		F742D310183D6D26009A53D6 /* BellTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BellTop.png; sourceTree = "<group>"; };
+		F742D311183D6D26009A53D6 /* ConciAir-v2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ConciAir-v2.png"; sourceTree = "<group>"; };
+		F742D312183D6D26009A53D6 /* ConciAir.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ConciAir.png; sourceTree = "<group>"; };
+		F742D313183D6D26009A53D6 /* ConciAirIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ConciAirIcon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -619,6 +631,12 @@
 		F742D2C1183B3632009A53D6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F742D30E183D6D26009A53D6 /* Bell.png */,
+				F742D30F183D6D26009A53D6 /* BellBottom.png */,
+				F742D310183D6D26009A53D6 /* BellTop.png */,
+				F742D311183D6D26009A53D6 /* ConciAir-v2.png */,
+				F742D312183D6D26009A53D6 /* ConciAir.png */,
+				F742D313183D6D26009A53D6 /* ConciAirIcon.png */,
 				D02A217C183D51DD00C3FC5D /* blue-background.png */,
 				D02A2176183C410700C3FC5D /* conciair-background.png */,
 				F742D2C2183B3632009A53D6 /* icons */,
@@ -751,6 +769,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F742D2E7183B3632009A53D6 /* SFAuthorizingViewController.xib in Resources */,
+				F742D315183D6D26009A53D6 /* BellBottom.png in Resources */,
 				F742D2C4183B3632009A53D6 /* icon-72.png in Resources */,
 				D02A217B183D517300C3FC5D /* Default@2x copy.png in Resources */,
 				F742D2F1183B3633009A53D6 /* SalesforceSDKResources.bundle in Resources */,
@@ -759,15 +778,20 @@
 				F742D2FB183B3D3A009A53D6 /* RootViewController.xib in Resources */,
 				F742D2B9183B3632009A53D6 /* LICENSE in Resources */,
 				F742D20F183B3632009A53D6 /* InfoPlist.strings in Resources */,
+				F742D318183D6D26009A53D6 /* ConciAir.png in Resources */,
 				D02A217D183D51DD00C3FC5D /* blue-background.png in Resources */,
+				F742D319183D6D26009A53D6 /* ConciAirIcon.png in Resources */,
+				F742D314183D6D26009A53D6 /* Bell.png in Resources */,
 				F742D2EF183B3633009A53D6 /* Settings.bundle in Resources */,
 				F742D213183B3632009A53D6 /* conciAir-Prefix.pch in Resources */,
 				F742D2DD183B3632009A53D6 /* readme.txt in Resources */,
 				D02A2177183C410700C3FC5D /* conciair-background.png in Resources */,
 				F742D2C6183B3632009A53D6 /* icon-72@2x.png in Resources */,
+				F742D316183D6D26009A53D6 /* BellTop.png in Resources */,
 				D02A217A183D517300C3FC5D /* Default-568h@2x.png in Resources */,
 				F742D2C0183B3632009A53D6 /* openssl_license.txt in Resources */,
 				F742D2E9183B3632009A53D6 /* SFNativeRootViewController.xib in Resources */,
+				F742D317183D6D26009A53D6 /* ConciAir-v2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

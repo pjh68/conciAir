@@ -22,6 +22,8 @@ uint const BEACON_MAJOR = 52231;
 
 @property (nonatomic) UIBackgroundTaskIdentifier bgTask;
 
+@property (strong, nonatomic) CLLocationManager *locationManager;
+
 @end
 
 
@@ -39,6 +41,21 @@ uint const BEACON_MAJOR = 52231;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if(self.locationManager==nil){
+        _locationManager=[[CLLocationManager alloc] init];
+        //I'm using ARC with this project so no need to release
+        
+        _locationManager.delegate=self;
+        _locationManager.purpose = @"We will try to tell you where you are if you get lost";
+        _locationManager.desiredAccuracy=kCLLocationAccuracyBest;
+        _locationManager.distanceFilter=500;
+        self.locationManager=_locationManager;
+    }
+    
+    if([CLLocationManager locationServicesEnabled]){
+        [self.locationManager startUpdatingLocation];
+    }
     
     /////////////////////////////////////////////////////////////
     // setup Estimote beacon manager
