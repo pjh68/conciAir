@@ -60,9 +60,9 @@ static NSString *const OAuthRedirectURI = @"testsfdc:///mobilesdk/detect/oauth/d
 
 - (UIViewController*)newRootViewController {
     RootViewController *rootVC = [[RootViewController alloc] initWithNibName:nil bundle:nil];
-    UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:rootVC];
-    
-    return navVC;
+    //UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:rootVC];
+    //return navVC;
+    return rootVC;
 }
 
 

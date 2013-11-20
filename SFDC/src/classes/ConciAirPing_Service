@@ -28,15 +28,16 @@ global with sharing class ConciAirPing_Service {
         	}
 
 			User currentUser = [SELECT  
-			                    ContactId, 
+			                    ContactId,
 			                    Contact.AccountId,
 			                    Contact.Level__c,
-			                    Contact.Name
+			                    Contact.Name,
+			                    Contact.Id
 				                from User 
 				                where Id = :UserInfo.getUserId() 
 				                limit 1];
 			
-			Id shopperId = currentUser.ContactId;    
+			system.debug('Current user: ' + currentUser); 
 
         	//Extract beacon and user id from payload data
 			Blob JSONDataFromMobileDevice = req.requestBody;
@@ -68,7 +69,7 @@ global with sharing class ConciAirPing_Service {
 			Case pingRequest = New Case();
 			pingRequest.status = 'New';
 			pingRequest.Department__c = dept.Id;
-			pingRequest.contact.Id = shopperId;
+			pingRequest.Contact = currentUser.Contact;
 
 			//set priority based on service status
 			if(currentUser.Contact.Level__c == 'Platinum'){
@@ -82,7 +83,7 @@ global with sharing class ConciAirPing_Service {
         	//Add chatter post on case and @ the conciAir team
 
 			if(dept.Store__r.conciAir_Group__c != null){
-	        	String chatterString = currentUser.contact.Name + ' would like help. They are in department ' + dept.Name + '.';
+	        	String chatterString = ' - I\'m here in ' + dept.Name + '. Can you come and help me?';
 
 	            //Create FeedItemInput to hold message body and @mentions//
 	            ConnectApi.FeedItemInput   feedItemInput = new ConnectApi.FeedItemInput();
@@ -130,6 +131,7 @@ global with sharing class ConciAirPing_Service {
     }
 
     public static string errorString(string err, string stack, integer lineNo){
+    	system.debug('Error :- ' +  err + ' Stack :- ' + stack + ' line No :- ' + string.valueof(lineNo));
 		return 'Error :- ' +  err + ' Stack :- ' + stack + ' line No :- ' + string.valueof(lineNo);
 	} 
 

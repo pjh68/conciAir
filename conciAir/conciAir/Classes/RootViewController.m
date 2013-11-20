@@ -129,7 +129,8 @@ uint const BEACON_MAJOR = 52231;
  */
 -(IBAction) onClickHelp:(id) sender {
     NSLog(@"onClickHelp >>");
-
+    self.helpLabel.text = @"Requesting assistance...";
+    
     [self sendCreateCaseRequest];
 }
 
@@ -165,6 +166,7 @@ uint const BEACON_MAJOR = 52231;
     [[SFRestAPI sharedInstance] sendRESTRequest:request
                                       failBlock:^(NSError *e) {
                                           NSLog(@"Failed to send create request: %@", e);
+                                          self.helpLabel.text = @"Couldn't connect. Try again?";
                                           
                                           UIAlertView *error=[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to send create request: %@", e] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                                           [error show];
@@ -172,8 +174,11 @@ uint const BEACON_MAJOR = 52231;
                                   completeBlock:^(NSDictionary *results) {
                                       NSLog(@"Success sending create request");
                                       
+                                      self.helpLabel.text = @"Assistance is on it's way";
+                                      /*
                                       UIAlertView *success=[[UIAlertView alloc] initWithTitle:@"Success" message:[ NSString stringWithFormat:@"Success: %@", results] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                                       [success show];
+                                    */
                                   }
      ];
 

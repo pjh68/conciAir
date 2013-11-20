@@ -11,7 +11,10 @@
 @interface RootViewController : UIViewController
 
 @property (strong, nonatomic) IBOutlet UIButton *helpBtn;
+@property (strong, nonatomic) IBOutlet UILabel *helpLabel;
 
 -(IBAction) onClickHelp:(id) sender;
+
+
 
 @end
