@@ -11,8 +11,9 @@
 #import "SFRestAPI+Blocks.h"
 #import "SFAccountManager.h"
 #import <ESTBeaconManager.h>
+#import "SFIdentityData.h"
 
-uint const BEACON_MAJOR = 36610;
+uint const BEACON_MAJOR = 52231;
 
 @interface RootViewController () <ESTBeaconManagerDelegate>
 
@@ -51,7 +52,13 @@ uint const BEACON_MAJOR = 36610;
     ESTBeaconRegion* region = [[ESTBeaconRegion alloc] initRegionWithMajor:BEACON_MAJOR identifier: @"EstimoteSampleRegion"];
     
     [self.beaconManager requestStateForRegion:region];
+}
 
+
+-(void)beaconManager:(ESTBeaconManager *)manager monitoringDidFailForRegion:(ESTBeaconRegion *)region withError:(NSError *)error {
+    
+    UIAlertView *alertError=[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Failed to discover beacon in region: %@", error] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alertError show];
 }
 
 -(void)beaconManager:(ESTBeaconManager *)manager
@@ -61,6 +68,9 @@ uint const BEACON_MAJOR = 36610;
     if(state == CLRegionStateInside)
     {
         self.helpBtn.enabled = YES;
+        
+        // start looking for estimote beacons in region
+        [self.beaconManager startRangingBeaconsInRegion:region];
     }
     else
     {
@@ -101,16 +111,6 @@ uint const BEACON_MAJOR = 36610;
 {
     if([beacons count] > 0)
     {
-        // Find the closed beacon that is registed
-        for (ESTBeacon* cBeacon in beacons)
-        {
-            // update beacon it same as selected initially
-            if(BEACON_MAJOR == [cBeacon.ibeacon.major unsignedShortValue])
-            {
-                self.selectedBeacon = cBeacon;
-            }
-        }
-        
         self.selectedBeacon = [beacons objectAtIndex:0];
     }
 }
@@ -146,7 +146,7 @@ uint const BEACON_MAJOR = 36610;
     
     if (self.selectedBeacon != nil) {
         [createData setValue:[self.selectedBeacon.ibeacon.major stringValue] forKey:@"major"];
-        [createData setValue:[self.selectedBeacon.ibeacon.major stringValue] forKey:@"minor"];
+        [createData setValue:[self.selectedBeacon.ibeacon.minor stringValue] forKey:@"minor"];
         [createData setValue:[self getProximityString:self.selectedBeacon] forKey:@"proximity"];
     } else {
         [createData setValue:@"-1" forKey:@"major"];
