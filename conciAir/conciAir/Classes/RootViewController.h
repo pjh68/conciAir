@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) IBOutlet UIButton *helpBtn;
 @property (strong, nonatomic) IBOutlet UILabel *helpLabel;
+@property (strong, nonatomic) IBOutlet UIView *bellTop;
 
 -(IBAction) onClickHelp:(id) sender;
 
