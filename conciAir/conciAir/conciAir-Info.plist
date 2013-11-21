@@ -36,7 +36,7 @@
 	<key>NSMainNibFile~ipad</key>
 	<string></string>
 	<key>SFDCOAuthLoginHost</key>
-	<string>login.salesforce.com</string>
+	<string>conciair-develop-edition.eu2.force.com</string>
 	<key>UILaunchImageFile</key>
 	<string>Default</string>
 	<key>UISupportedInterfaceOrientations</key>
